@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 builder.Services.AddDbContext<StoreDbContext>(opt =>
 {
 	opt.UseSqlServer(builder.Configuration.GetConnectionString("SportsStoreConnection"));
@@ -32,6 +34,7 @@ app.MapControllerRoute("pagination",
 	new { Controller = "Home", action = "Index", productPage = 1 });
 
 app.MapDefaultControllerRoute();
+app.MapRazorPages();
 
 
 SeedData.EnsurePopulated(app);
