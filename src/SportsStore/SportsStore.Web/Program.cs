@@ -16,6 +16,7 @@ builder.Services.AddDbContext<StoreDbContext>(opt =>
 	opt.UseSqlServer(builder.Configuration.GetConnectionString("SportsStoreConnection"));
 });
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 
 var app = builder.Build();
