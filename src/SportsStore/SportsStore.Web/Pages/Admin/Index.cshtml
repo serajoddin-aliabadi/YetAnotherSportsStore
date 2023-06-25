@@ -1,0 +1,20 @@
+﻿@page "/admin"
+@using SportsStore.Web.Pages.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+	<title>پنل مدیریت</title>
+	<link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap/css/bootstrap-grid.rtl.min.css" rel="stylesheet" />
+	<base href="/" />
+</head>
+<body>
+	<component type="typeof(Routed)" render-mode="Server" />
+	<script src="/_framework/blazor.server.js"></script>
+</body>
+</html>
