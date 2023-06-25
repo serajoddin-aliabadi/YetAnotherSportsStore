@@ -1,0 +1,44 @@
+﻿@page "/admin/orders"
+@inherits OwningComponentBase<IOrderRepository>
+
+<OrderTable TableTitle="سفارشات پردازش نشده" Orders="UnshippedOrders"
+			ButtonLabel="پردازش" OrderSelected="ShipOrder" />
+<OrderTable TableTitle="سفارشات پردازش شده" Orders="ShippedOrders"
+			ButtonLabel="ریست" OrderSelected="ResetOrder" />
+<button class="btn btn-info" @onclick="@(e => UpdateData())">
+	بروز رسانی اطلاعات
+</button>
+
+@code {
+
+	public IOrderRepository Repository => Service;
+
+	public IEnumerable<Order> AllOrders { get; set; } = Enumerable.Empty<Order>();
+	public IEnumerable<Order> UnshippedOrders { get; set; } = Enumerable.Empty<Order>();
+	public IEnumerable<Order> ShippedOrders { get; set; } = Enumerable.Empty<Order>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await UpdateData();
+	}
+
+	public async Task UpdateData()
+	{
+		AllOrders = await Repository.Orders.ToListAsync();
+		UnshippedOrders = AllOrders.Where(o => !o.Shipped);
+		ShippedOrders = AllOrders.Where(o => o.Shipped);
+	}
+
+	public void ShipOrder(int id) => UpdateOrder(id, true);
+	public void ResetOrder(int id) => UpdateOrder(id, false);
+
+	private void UpdateOrder(int id, bool shipValue)
+	{
+		Order? o = Repository.Orders.FirstOrDefault(o => o.OrderID == id);
+		if (o != null)
+		{
+			o.Shipped = shipValue;
+			Repository.SaveOrder(o);
+		}
+	}
+}

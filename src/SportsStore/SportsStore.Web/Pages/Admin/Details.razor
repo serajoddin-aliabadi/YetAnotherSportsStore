@@ -1,0 +1,35 @@
+﻿@page "/admin/products/details/{id:long}"
+@inherits OwningComponentBase<IStoreRepository>
+
+<h3 class="bg-info text-white text-center p-1">Details</h3>
+
+<table class="table table-sm table-bordered table-striped">
+	<tbody>
+		<tr><th>ID</th><td>@Product?.ProductID</td></tr>
+		<tr><th>نام</th><td>@Product?.Name</td></tr>
+		<tr><th>توضیحات</th><td>@Product?.Description</td></tr>
+		<tr><th>دسته</th><td>@Product?.Category</td></tr>
+		<tr><th>قیمت</th><td>@Product?.Price.ToString("C")</td></tr>
+	</tbody>
+</table>
+
+<NavLink class="btn btn-warning" href="@EditUrl">ویرایش</NavLink>
+<NavLink class="btn btn-secondary" href="/admin/products">برگشت</NavLink>
+
+@code {
+
+	[Inject]
+	public IStoreRepository? Repository { get; set; }
+
+	[Parameter]
+	public long Id { get; set; }
+
+	public Product? Product { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		Product = Repository?.Products.FirstOrDefault(p => p.ProductID == Id);
+	}
+
+	public string EditUrl => $"/admin/products/edit/{Product?.ProductID}";
+}
