@@ -1,9 +1,11 @@
 ﻿@page "/admin"
 @using SportsStore.Web.Pages.Admin
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Authorization
 @{
 	Layout = null;
 }
+@attribute [Authorize]
 
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">

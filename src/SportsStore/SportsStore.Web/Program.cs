@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.Web.Models;
 
@@ -16,11 +17,32 @@ builder.Services.AddDbContext<StoreDbContext>(opt =>
 {
 	opt.UseSqlServer(builder.Configuration.GetConnectionString("SportsStoreConnection"));
 });
+
+builder.Services.AddDbContext<AppIdentityDbContext>(opt =>
+{
+	opt.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+});
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+	.AddEntityFrameworkStores<AppIdentityDbContext>();
+
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 
 var app = builder.Build();
+
+
+if (app.Environment.IsProduction())
+{
+	app.UseExceptionHandler("/Error");
+}
+
+app.UseRequestLocalization(opt =>
+{
+	opt.AddSupportedCultures("fa-IR")
+		.AddSupportedUICultures("fa-IR")
+		.SetDefaultCulture("fa-IR");
+});
 
 
 app.UseStaticFiles();
@@ -47,6 +69,7 @@ app.MapFallbackToPage("/Admin/{*catchall}", "/Admin/Index");
 
 
 SeedData.EnsurePopulated(app);
+IdentitySeedData.EnsurePopulated(app);
 
 
 app.Run();
