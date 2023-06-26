@@ -32,6 +32,19 @@ builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 var app = builder.Build();
 
 
+if (app.Environment.IsProduction())
+{
+	app.UseExceptionHandler("/Error");
+}
+
+app.UseRequestLocalization(opt =>
+{
+	opt.AddSupportedCultures("fa-IR")
+		.AddSupportedUICultures("fa-IR")
+		.SetDefaultCulture("fa-IR");
+});
+
+
 app.UseStaticFiles();
 app.UseSession();
 
