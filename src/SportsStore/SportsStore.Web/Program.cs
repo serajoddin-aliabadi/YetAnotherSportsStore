@@ -56,6 +56,7 @@ app.MapFallbackToPage("/Admin/{*catchall}", "/Admin/Index");
 
 
 SeedData.EnsurePopulated(app);
+IdentitySeedData.EnsurePopulated(app);
 
 
 app.Run();
