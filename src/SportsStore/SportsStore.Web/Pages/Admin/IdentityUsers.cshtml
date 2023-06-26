@@ -1,5 +1,6 @@
 ﻿@page
 @model IdentityUsersModel
+@using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Identity
 
 <h3 class="bg-primary text-white text-center p-2">مدیر</h3>
@@ -14,6 +15,7 @@
 
 @functions {
 
+	[Authorize]
 	public class IdentityUsersModel : PageModel
 	{
 		private UserManager<IdentityUser> userManager;
